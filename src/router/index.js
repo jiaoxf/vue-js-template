@@ -1,27 +1,20 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import Vue from "vue";
+import VueRouter from "vue-router";
+import RouterConfig from "./routerConfig";
 
-Vue.use(VueRouter)
-
-  const routes = [
-  {
-    path: '/',
-    name: 'Home',
-    component: Home
-  },
-  {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }
-]
+Vue.use(VueRouter);
 
 const router = new VueRouter({
-  routes
-})
+  routes: RouterConfig
+});
 
-export default router
+//beforeEach是router的钩子函数，在进入路由前执行
+router.beforeEach((to, from, next) => {
+  if (to.meta.title) {
+    //判断是否有标题
+    document.title = to.meta.title;
+  }
+  next();
+});
+
+export default router;
